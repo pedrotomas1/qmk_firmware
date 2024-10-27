@@ -44,27 +44,49 @@ bool oled_task_kb(void) {
         oled_write_P(PSTR("rev3\n\n"), false);
 #endif
         // Host Keyboard Layer Status
+        // oled_write_P(PSTR("Layer: "), false);
+        // switch (get_highest_layer(layer_state | default_layer_state)) {
+        //     case 0:
+        //         oled_write_P(PSTR("QWERTY\n"), false);
+        //         break;
+        //     case 1:
+        //         oled_write_P(PSTR("Dvorak\n"), false);
+        //         break;
+        //     case 2:
+        //         oled_write_P(PSTR("Colemak-DH\n"), false);
+        //         break;
+        //     case 3:
+        //         oled_write_P(PSTR("Nav\n"), false);
+        //         break;
+        //     case 4:
+        //         oled_write_P(PSTR("Sym\n"), false);
+        //         break;
+        //     case 5:
+        //         oled_write_P(PSTR("Function\n"), false);
+        //         break;
+        //     case 6:
+        //         oled_write_P(PSTR("Adjust\n"), false);
+        //         break;
+        //     default:
+        //         oled_write_P(PSTR("Undefined\n"), false);
+        // }
+
+// changed to display correct layers, 27/10/2024
         oled_write_P(PSTR("Layer: "), false);
         switch (get_highest_layer(layer_state | default_layer_state)) {
             case 0:
                 oled_write_P(PSTR("QWERTY\n"), false);
                 break;
             case 1:
-                oled_write_P(PSTR("Dvorak\n"), false);
-                break;
-            case 2:
-                oled_write_P(PSTR("Colemak-DH\n"), false);
-                break;
-            case 3:
                 oled_write_P(PSTR("Nav\n"), false);
                 break;
-            case 4:
+            case 2:
                 oled_write_P(PSTR("Sym\n"), false);
                 break;
-            case 5:
+            case 3:
                 oled_write_P(PSTR("Function\n"), false);
                 break;
-            case 6:
+            case 4:
                 oled_write_P(PSTR("Adjust\n"), false);
                 break;
             default:
@@ -103,14 +125,15 @@ bool encoder_update_kb(uint8_t index, bool clockwise) {
 
     if (index == 0) {
         // Volume control
-        if (clockwise) {
+        // fix volume orientation- 28/07/24
+        if (!clockwise) {
             tap_code(KC_VOLU);
         } else {
             tap_code(KC_VOLD);
         }
     } else if (index == 1) {
         // Page up/Page down
-        if (clockwise) {
+        if (!clockwise) {
             tap_code(KC_PGDN);
         } else {
             tap_code(KC_PGUP);
